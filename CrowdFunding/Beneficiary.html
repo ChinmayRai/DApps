@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Beneficiary Homepage</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/1-col-portfolio.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+	   .status{
+	     display: inline-block;
+	   }
+	</style>
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="homepage.html">Home</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a onclick="location.reload();">Beneficiary</a>
+                    </li>
+                    <li>
+                        <a onclick="identify_investor();">Investor</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Beneficiary's Home
+                    <small>Crowd Fund Status</small>
+                </h1>
+            </div>
+        </div>
+        <!-- /.row -->
+        
+        <div class="row">
+            <h4 align="center">
+            	Status: <div id="Status" style="display:inline-block;"></div> | Time till deadline (s) : <div id="sec" style="display:inline-block;"></div> <div id="goal" style="display:inline-block;"></div> 
+            </h4>
+        </div>
+        
+        <hr>
+
+        <div class="row">
+            <h4 align="center">
+                Total ether funded : <div id="Total balance" style="display:inline-block;"></div> &#8725 <div id="goal amount" style="display:inline-block;"></div> 
+            </h4>
+        </div>
+        
+        <hr>
+
+        <div class="row">
+            <h4 align="center">
+                 Ether Balance of Beneficiary : <div id="Owner ether balance" style="display:inline-block;"></div> ETH
+            </h4>
+        </div>
+        
+        <hr>
+            
+        <div class="row">
+            <h4 align="center">
+                 Owner's Account : <div id="Owner Account addr" style="display:inline-block;"></div> / <div id="Owner ether balance" style="display:inline-block;"></div> (ETH) / <div id="Owner Token balance" style="display:inline-block;"></div> (CTC)
+            </h4>
+        </div>
+
+        <hr> 
+
+        <div class="row">
+            <h4 align="center">
+                 CrowdFunding Contract's Account &#8758; <div id="Contract addr" style="display:inline-block;"></div> / <div id="Contract ether balance" style="display:inline-block;"></div> (ETH)  / <div id="contract Token balance" style="display:inline-block;"></div> (CTC)
+            </h4>
+        </div>
+        
+        <hr>
+			<div style="text-align:center">
+            	<a class="btn btn-primary btn-lg" onclick="Withdraw()">Withdraw</a>
+            	<a class="btn btn-primary btn-lg" onclick="Check()">Check Goal Reached</a>
+            </div>        
+        <hr>
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Chinmay Rai 2018</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/web3.min.js"></script>
+
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+          web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+        }
+
+        var token = decodeURIComponent(window.location.search).substring(1).split("&");
+        var Owner_account = token[0];
+        var Contract_add = token[1];
+
+        var abi=[{"constant":false,"inputs":[],"name":"checkGoalReached","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"investment","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalAmount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"goalAmount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"deadline","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"self_destroy","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"withdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"tokenReward","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"goalReached","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"price","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"fund","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"end","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_durationMinutes","type":"uint256"},{"name":"_goalAmount","type":"uint256"},{"name":"_costOfToken","type":"uint256"},{"name":"_tokenAddress","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"ownerAddress","type":"address"},{"indexed":false,"name":"amountRaisedValue","type":"uint256"}],"name":"GoalReached","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"backer","type":"address"},{"indexed":false,"name":"amount","type":"uint256"},{"indexed":false,"name":"isContribution","type":"bool"}],"name":"FundTransfer","type":"event"}]
+
+        var abi1=[{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"_tokenName","type":"string"},{"name":"_tokenSymbol","type":"string"},{"name":"_decimalUnits","type":"uint8"},{"name":"_initialSupply","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_from","type":"address"},{"indexed":false,"name":"_to","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Transfer","type":"event"}]
+
+
+        var contract = web3.eth.contract(abi).at(Contract_add);
+        var token = web3.eth.contract(abi1).at("0x4030Fdba74756A9E4a46D52a87f9E1A920e026e8");
+
+        document.getElementById('Owner Account addr').innerText = Owner_account;
+        document.getElementById('Contract addr').innerText = Contract_add;
+        document.getElementById('Owner ether balance').innerText = web3.fromWei(web3.eth.getBalance(Owner_account));
+        document.getElementById('Contract ether balance').innerText = web3.fromWei(web3.eth.getBalance(Contract_add));
+
+        
+        document.getElementById('Owner Token balance').innerText = token.balanceOf(Owner_account);
+        document.getElementById('contract Token balance').innerText = token.balanceOf(Contract_add);
+        document.getElementById('Total balance').innerText = web3.fromWei(contract.totalAmount());
+        document.getElementById('goal amount').innerText =web3.fromWei(contract.goalAmount());
+        document.getElementById('sec').innerText = contract.deadline() - Math.floor(Date.now() / 1000);
+        if(contract.end())
+            document.getElementById('Status').innerText = "Ended.";
+        else
+            document.getElementById('Status').innerText = "Ongoing";
+        
+        
+        
+
+        function Withdraw(){
+        	var txo = {from:Owner_account, gasPrice:'20000000000',gas:'1000000'};
+        	var pwd = prompt("Password:","");
+        	if(web3.personal.unlockAccount(Owner_account,pwd,15)==true){
+        		console.log("done");
+        		contract.withdraw(txo);
+        	}
+        	
+            //contract.withdraw();
+        }
+
+        function Check(){
+        	if((contract.deadline() > Math.floor(Date.now() / 1000)) || (contract.end()))alert("Can't Execute: Wait for dealine OR CrowdFunding has already ended");
+        	
+        	else{
+	        	var txo = {from:Owner_account, gasPrice:'20000000000',gas:'1000000'};
+	        	var pwd = prompt("Password:","");
+	        	if(web3.personal.unlockAccount(Owner_account,pwd,15)==true){
+	        		console.log("done");
+	        		contract.checkGoalReached(txo);
+	        	}
+	        	if(contract.goalReached())
+	        		document.getElementById('goal').innerText = "|  Goal has been reached";
+	        	else
+	        		document.getElementById('goal').innerText = "|  Goal has not been reached";
+        	}
+
+        }
+
+        function identify_investor(argument) {
+            var add = prompt("Your Account's address:", "");
+            if (web3.eth.accounts.indexOf(add)> -1) {
+            	window.open("Investor.html"+"?"+add+"&"+Contract_add+"&"+Owner_account, '_blank');
+                //window.location.href = "Investor.html"+"?"+add+"&"+Contract_add+"&"+Owner_account;
+            } 
+        }
+    </script>
+
+</body>
+
+</html>

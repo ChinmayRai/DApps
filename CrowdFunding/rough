@@ -1,0 +1,86 @@
+val abi = ABI
+var myContract = web3.eth.contract(abi)
+var code = bytecode
+personal.unlockAccount(own,pwd)
+var contract = myContract.new("Alt","CTC",0,1000,{from:eth.accounts[1],data:code,gasPrice:'20000000000000',gas:'1000000'})
+
+0x2746Cd07ed8573AD66715B2a2bB5A2C035c27D38
+
+
+val abi1 = ABI_2
+var myContract = web3.eth.contract(abi)
+personal.unlockAccount(own,"chinmay",90)
+var cf = cfi.new(15,1000,1,"0x2746Cd07ed8573AD66715B2a2bB5A2C035c27D38",{from:own,data:co1,gasPrice:'20000000000000',gas:'1000000'})
+
+var txo = {from:own,gasPrice:'200000000000',gas:'1000000'}
+contract.method(arg1,arg2)
+
+> contract
+{
+  abi: [{
+      constant: true,
+      inputs: [],
+      name: "name",
+      outputs: [{...}],
+      payable: false,
+      stateMutability: "view",
+      type: "function"
+  }, {
+      constant: true,
+      inputs: [],
+      name: "decimals",
+      outputs: [{...}],
+      payable: false,
+      stateMutability: "view",
+      type: "function"
+  }, {
+      constant: true,
+      inputs: [{...}],
+      name: "balanceOf",
+      outputs: [{...}],
+      payable: false,
+      stateMutability: "view",
+      type: "function"
+  }, {
+      constant: true,
+      inputs: [],
+      name: "symbol",
+      outputs: [{...}],
+      payable: false,
+      stateMutability: "view",
+      type: "function"
+  }, {
+      constant: false,
+      inputs: [{...}, {...}],
+      name: "transfer",
+      outputs: [],
+      payable: false,
+      stateMutability: "nonpayable",
+      type: "function"
+  }, {
+      inputs: [{...}, {...}, {...}, {...}],
+      payable: false,
+      stateMutability: "nonpayable",
+      type: "constructor"
+  }, {
+      anonymous: false,
+      inputs: [{...}, {...}, {...}],
+      name: "Transfer",
+      type: "event"
+  }],
+  address: "0x80bef5ad139d50df2fc5ca4069b78cad644ecb54",
+  transactionHash: "0xe2b1550c82f6ca80f3ab0d9f1165f68bf5d4151a46e83ca4088105a3e25a20a0",
+  Transfer: function(),
+  allEvents: function(),
+  balanceOf: function(),
+  decimals: function(),
+  name: function(),
+  symbol: function(),
+  transfer: function()
+}
+> contract.name()
+"Alt"
+> contract.balanceOf(eth.accounts[1])
+1000
+> contract.symbol()
+"CTC"

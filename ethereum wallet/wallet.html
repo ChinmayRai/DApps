@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  	<title>Chinmay's Ethereum Wallet</title>
+
+  	<!-- Bootstrap -->
+	  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+
+    <!-- The code between the following div tags defines the structure of web page and defines elements like buttons, tables etc. -->
+  	<div class="container" style="width: 650px;">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <!-- Heading -->
+          <h1 class="text-center">Chinmay's Ethereum Wallet</h1>
+          <hr/>
+          <br/>
+
+          <div id="loader">
+
+            <!-- Sub-heading -->
+            <p class="text-center">List of Accounts</p>
+
+            <!-- when Update button is clicked, it calls update() -->
+            <p class="text-center"> <button type="button" align="middle" onClick="update();">Update</button></p>
+
+          </div>
+
+          <!-- Contents (Two tables) -->
+          <div id="content">
+
+            <!-- Table 1 -->
+            <table class="table">
+              <thead>
+                <tr>
+                  <!-- Table 1 headers -->
+                  <th scope="col">#</th>
+                  <th scope="col">Address</th>
+                  <th scope="col">Balance (in Ether)</th>
+                </tr>
+              </thead>
+                <!-- row 1 -->
+                <tr>
+                  <td> 1 </td>
+                  <td> <div id="Account1"></div> </td>
+                  <td> <div id="Balance1"></div> </td>
+                </tr>
+
+                <!-- row 2 -->
+                <tr>
+                  <td> 2 </td>
+                  <td> <div id="Account2"></div> </td>
+                  <td> <div id="Balance2"></div> </td>
+                </tr>
+
+                <!-- row 3 -->
+                <tr>
+                  <td> 3 </td>
+                  <td> <div id="Account3"></div> </td>
+                  <td> <div id="Balance3"></div> </td>
+                </tr>
+
+                <!-- row 4 -->
+                <tr>
+                  <td> 4 </td>
+                  <td> <div id="Account4"></div> </td>
+                  <td> <div id="Balance4"></div> </td>
+                </tr>
+
+                <!-- last row -->
+                <tr>
+                  <td></td>
+                  <td> Total</td>
+                  <td> <div id="Total_Balance"></div> </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Table 2 -->
+            <table class="table">
+
+              <!-- row for selecting the Transmitter -->
+              <tr>
+                <td>Transmitter</td> 
+                <td>  
+                <input list="browsers" name="sender_address">
+                  <datalist id="browsers">
+                    <option value="0x9a638026e514f4a639571e2c0d8a37d1cb316fc4">
+                    <option value="0x90a7baed4aafd620a0425e44ba0affbf27300c3b">
+                    <option value="0x82b16786f38aedfdaf61879d36f64e1e6505d475">
+                    <option value="0x8f922442f3ecaf5feade3abea1d51303fd212594">
+                  </datalist>
+                </td>
+              </tr>
+
+              <!-- row for selecting the rreceiver -->
+              <tr>
+                <td>Recipient </td>
+                <td><input type="text" name="recipient_address"><br></td>
+              </tr>
+
+              <!-- row for Amount to transfer -->
+              <tr>
+                <td>Value </td>
+                <td><input type="number" name="value_to_transfer"><br></td>
+              </tr>
+
+              <!-- row for password -->
+              <tr>
+                <td>Password </td>
+                <td><input type="password" name="password"><br></td>
+                <td><button type="button" onclick="send_transaction();">Send</button></td>
+              </tr>
+            </table>
+
+
+            <!-- Transaction Hash of last transaction -->
+            <label for="output">Hash of last transaction </label><div id="output"></div>
+
+            <hr/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    
+
+    <!-- Including Important JavaScirpt Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/web3.min.js"></script>
+
+    <!-- The code between the following <script> tags establishes our connection with the blockchain using web3.js -->
+    <script>
+
+      //establishing the connection
+      if (typeof web3 !== 'undefined') {
+        web3 = new Web3(web3.currentProvider);
+      } else {
+        web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+      }
+
+      //get the acccount addresses
+      document.getElementById('Account1').innerText = web3.eth.accounts[0];
+      document.getElementById('Account2').innerText = web3.eth.accounts[1];
+      document.getElementById('Account3').innerText = web3.eth.accounts[2];
+      document.getElementById('Account4').innerText = web3.eth.accounts[3];
+
+      //get the acccount balances in ethers
+      document.getElementById('Balance1').innerText = web3.fromWei(web3.eth.getBalance(web3.eth.accounts[0]));
+      document.getElementById('Balance2').innerText = web3.fromWei(web3.eth.getBalance(web3.eth.accounts[1]));
+      document.getElementById('Balance3').innerText = web3.fromWei(web3.eth.getBalance(web3.eth.accounts[2]));
+      document.getElementById('Balance4').innerText = web3.fromWei(web3.eth.getBalance(web3.eth.accounts[3]));
+
+
+      //function for updating the acccount balances
+      function update() {
+
+        var bal1 = web3.fromWei(web3.eth.getBalance(web3.eth.accounts[0]));
+        var bal2 = web3.fromWei(web3.eth.getBalance(web3.eth.accounts[1]));
+        var bal3 = web3.fromWei(web3.eth.getBalance(web3.eth.accounts[2]));
+        var bal4 = web3.fromWei(web3.eth.getBalance(web3.eth.accounts[3]));
+
+
+        document.getElementById('Balance1').innerText = bal1;
+        document.getElementById('Balance2').innerText = bal2;
+        document.getElementById('Balance3').innerText = bal3;
+        document.getElementById('Balance4').innerText = bal4;
+        document.getElementById('Total_Balance').innerText = parseInt(bal1) + parseInt(bal2) + parseInt(bal3) +parseInt(bal4);
+ 
+      }
+
+      //function making transactions
+      function send_transaction() {
+
+        //reading Sender's & reciever's address, Amount, password
+        var sen = document.getElementsByName("sender_address")[0].value;
+        var rec = document.getElementsByName("recipient_address")[0].value;
+        var amount = parseInt(document.getElementsByName("value_to_transfer")[0].value,10) * 1000000000000000000;
+        var pwd = document.getElementsByName("password")[0].value;
+
+        //unlocking the sender's account with password
+        web3.personal.unlockAccount(sen,pwd);
+
+        //executing transaction and outputting hash of transaction
+        web3.eth.sendTransaction({ from: sen, to: rec, value: amount }, function(error, hash){
+           if(error){document.getElementById('output').innerText = error;}
+           else document.getElementById('output').innerText = hash ;
+         });
+
+      }
+
+      
+    </script>
+  </body>
+</html>
+

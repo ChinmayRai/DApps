@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Home</title>
+
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/1-col-portfolio.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <a class="navbar-brand" href="homepage.html">Home</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+
+            
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a onclick="validate_password()">Beneficiary</a>
+                    </li>
+                    <li>
+                        <a onclick="identify_investor()">Investor</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+    	<h1 align="center">CrowdFunding App</h1>
+    	<img src="img.jpg" class="img-rounded" alt="Wall" style="width:89%;">
+        
+    	<footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Chinmay Rai 2018</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/web3.min.js"></script>
+
+    <script>
+
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+          web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+        }
+
+        //personal.unlockAccount("")
+
+       	function validate_password() { 
+    	    var add = prompt("Your Account's address:", "");
+            var pwd = prompt("Account's password:", "");
+            var cadd = prompt("Contract Address:")
+            var queryString = "?"+add+"&"+cadd
+    	    if (web3.personal.unlockAccount(add,pwd,1)==true) {
+    	    	window.open("Beneficiary.html" + queryString, '_blank');
+    	        //window.location.href = "Beneficiary.html" + queryString;
+    	    } 
+        };
+
+        function identify_investor(argument) {
+        	var add = prompt("Your Account's address:", "");
+            var cadd = prompt("Contract Address:");
+            var ben = prompt("Beneficiary Account's address:", "");
+    	    if (web3.eth.accounts.indexOf(add)> -1) {
+    	    	window.open("Investor.html"+"?"+add+"&"+cadd+"&"+cadd, '_blank');
+    	        //window.location.href = "Investor.html"+"?"+add+"&"+cadd+"&"+cadd;
+    	    } 
+        }
+    
+    </script>
+
+
+</body>
+
+</html>

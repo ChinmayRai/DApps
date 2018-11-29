@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Investor Homepage</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/1-col-portfolio.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="homepage.html">Home</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a onclick="validate_password()">Beneficiary</a>
+                    </li>
+                    <li>
+                        <a href="Investor.html">Investor</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Make an Investment
+                </h1>
+            </div>
+        </div>
+        <!-- /.row -->
+        
+        <div class="row">
+            <h3 align="center">
+            	Status: <div id="Status" style="display:inline-block;"></div> | Time till deadline (s) : <div id="sec" style="display:inline-block;"></div>
+            </h3>
+        </div>
+        
+        <hr>
+
+        <div class="row">
+            <h3 align="center">
+                 Account to Fund : <input type="text" name="sender_address">
+            </h3>
+        </div>
+        
+        <hr>
+
+        <div class="row">
+            <h3 align="center">
+                 Amount of Funding : <input type="number" name="value_to_transfer">
+            </h3>
+        </div>
+        
+        <hr>
+
+        <div class="row">
+            <h3 align="center">
+                 Password : <input type="password" name="password">
+            </h3>
+        </div>
+        
+        <hr>
+
+        <div class="row">
+            <h3 align="center">
+                 <a class="btn btn-primary btn-lg" onclick="send_transaction();">Fund</a>
+            </h3>
+        </div>
+
+
+
+
+    <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Chinmay Rai 2018</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/web3.min.js"></script>
+
+    <script>
+
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+          web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+        }
+
+        var token = decodeURIComponent(window.location.search).substring(1).split("&");
+        var investor = token[0];
+        var Contract_add = token[1];
+        var owner = token[2];
+
+        var abi=[{"constant":false,"inputs":[],"name":"checkGoalReached","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"investment","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"totalAmount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"goalAmount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"deadline","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"self_destroy","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"withdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"tokenReward","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"goalReached","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"price","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"fund","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"end","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_durationMinutes","type":"uint256"},{"name":"_goalAmount","type":"uint256"},{"name":"_costOfToken","type":"uint256"},{"name":"_tokenAddress","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"ownerAddress","type":"address"},{"indexed":false,"name":"amountRaisedValue","type":"uint256"}],"name":"GoalReached","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"backer","type":"address"},{"indexed":false,"name":"amount","type":"uint256"},{"indexed":false,"name":"isContribution","type":"bool"}],"name":"FundTransfer","type":"event"}]
+
+        var contract = web3.eth.contract(abi).at(Contract_add);
+        var sen = document.getElementsByName("sender_address")[0].value;
+        var amount = parseInt(document.getElementsByName("value_to_transfer")[0].value,10) * 1000000000000000000;
+        var pwd = document.getElementsByName("password")[0].value;
+
+        document.getElementById('sec').innerText = contract.deadline() - Math.floor(Date.now() / 1000)
+        if(contract.end())
+            document.getElementById('Status').innerText = "The Crowd Funding has ended."
+        else
+            document.getElementById('Status').innerText = "The Crowd Funding is going on."
+        
+
+        function send_transaction(){
+        	if(contract.deadline() < Math.floor(Date.now() / 1000))alert("The Deadline has already passed!");
+        	else{
+        		var sen = document.getElementsByName("sender_address")[0].value;
+		        var amount = parseInt(document.getElementsByName("value_to_transfer")[0].value,10) * 1000000000000000000;
+		        var pwd = document.getElementsByName("password")[0].value;
+	            console.log(sen,amount,pwd)
+	            var txo = {from:sen, gasPrice:'20000000000',gas:'1000000',value:amount};
+	        	if(web3.personal.unlockAccount(sen,pwd,15)==true){
+	        		console.log("done");
+	        		contract.fund(txo);
+	        		window.close();
+	        	}
+        	}
+        }
+
+
+        function validate_password() { 
+            var add = prompt("Your Account's address:", "");
+            var pwd = prompt("Account's password:", "");
+            var cadd = prompt("Contract Address:")
+            var queryString = "?"+add+"&"+cadd
+            if (web3.personal.unlockAccount(add,pwd,1)==true) {
+                window.open("Beneficiary.html" + queryString, '_blank');
+                //window.location.href = "Beneficiary.html" + queryString;
+            } 
+        };
+
+        function identify_investor(argument) {
+            var add = prompt("Your Account's address:", "");
+            if (web3.eth.accounts.indexOf(add)> -1) {
+                window.open("Investor.html"+"?"+add+"&"+Contract_add+"&"+Owner_account, '_blank');
+                //window.location.href = "Investor.html"+"?"+add+"&"+Contract_add+"&"+Owner_account;
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
